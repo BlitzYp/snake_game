@@ -26,11 +26,12 @@ def change_down() -> None:
 def add_body_part() -> None:
     """Adds a new segment at the end of the snake"""
     last_x = snake[len(snake) - 1].xcor() - SNAKE_BLOCK_WIDTH if len(snake) > 0 else 0
+    last_y = snake[len(snake) - 1].ycor() - SNAKE_BLOCK_HEIGHT if len(snake) > 2 else 0
     t = Turtle("square")
     t.penup()
     t.color("white")
     t.speed("fastest")
-    t.setpos(last_x, 0)
+    t.setpos(last_x, last_y)
     snake.append(t)
 
 def check_game_over() -> bool:
