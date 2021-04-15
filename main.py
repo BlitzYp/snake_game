@@ -25,6 +25,20 @@ def change_food_location(food: turtle.Turtle) -> None:
 def check_collision(food: turtle.Turtle) -> bool:
     return int(sqrt(pow(food.xcor() - snake[0].xcor(), 2) + pow(food.ycor() - snake[0].ycor(), 2))) < 15
 
+def get_high_score() -> int:
+    with open("score.txt", "r+") as file:
+        file.seek(0)
+        data = file.read()
+        if len(data) == 0: 
+            file.write(str(0))
+            return 0
+        return int(data)
+
+def write_high_score(score) -> None:
+    with open("score.txt", "w") as file:
+        file.seek(0)
+        file.write(str(score))
+
 if __name__ == "__main__":
     # Rendering the original snake
     screen = turtle.Screen()
@@ -45,7 +59,8 @@ if __name__ == "__main__":
     score.penup()
     score.color("red")
     counter = 0
-    score.write(f"Score: {counter}", move=True, align="center", font=("Arial", 30, "normal"))
+    high_score = get_high_score()
+    score.write(f"Score: {counter} High score: {high_score}", move=True, align="center", font=("Arial", 30, "normal"))
 
     # The game loop
     while True:
@@ -56,7 +71,9 @@ if __name__ == "__main__":
             counter += 1
             score.clear()
             score.setpos(0, SCREEN_HEIGHT / 2 - 40)
-            score.write(f"Score: {counter}", move=True, align="center", font=("Arial", 30, "normal"))
+            if counter > high_score:
+                write_high_score(counter)
+            score.write(f"Score: {counter} High score: {get_high_score()}", move=True, align="center", font=("Arial", 30, "normal"))
         if check_game_over(): 
             score.setpos(0,0)
             score.color("red")
